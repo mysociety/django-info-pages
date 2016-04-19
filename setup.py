@@ -16,8 +16,6 @@ setup(
         'nose',
         'django-slug-helpers',
         'django-autocomplete-light',
-
-        # CommentArchiveMixin from pombola.core.views
-        # File from pombola.file_archive.models
+        'django-file-archive==0.0.2',
     ]
 )
