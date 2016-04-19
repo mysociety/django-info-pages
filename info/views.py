@@ -10,7 +10,6 @@ from django.conf import settings
 
 from models import InfoPage, Category, Tag, ViewCount
 
-from pombola.core.views import CommentArchiveMixin
 
 class BlogMixin(ContextMixin):
 
@@ -100,7 +99,7 @@ class InfoBlogTag(InfoBlogLabelBase):
     filter_field = 'tags__slug__in'
 
 
-class InfoBlogView(BlogMixin, CommentArchiveMixin, DetailView):
+class InfoBlogView(BlogMixin, DetailView):
     """Show the blog post for the given slug"""
     model = InfoPage
     queryset = InfoPage.objects.filter(kind=InfoPage.KIND_BLOG)
