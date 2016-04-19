@@ -17,5 +17,6 @@ setup(
         'django-slug-helpers',
         'django-autocomplete-light',
         'django-file-archive==0.0.2',
+        'django-slug-helpers==0.0.2',
     ]
 )
