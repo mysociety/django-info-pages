@@ -110,7 +110,7 @@ class InfoTest(TestCase):
 @override_settings(INFO_PAGES_ALLOW_RAW_HTML=True)
 class ViewCountsTest(TestCase):
 
-    @mock.patch('pombola.info.views.date')
+    @mock.patch('info.views.date')
     def test_blog_post_views_are_counted(self, mockdate=None):
         example_post_1 = InfoPage.objects.create(
             slug="post",
@@ -172,7 +172,7 @@ class ViewCountsTest(TestCase):
         self.assertEqual(ViewCount.objects.get(page=example_post_2.id, date=day1).count, 1)
         self.assertEqual(ViewCount.objects.get(page=example_post_1.id, date=day2).count, 1)
 
-    @mock.patch('pombola.info.views.date')
+    @mock.patch('info.views.date')
     def test_blog_sidebar_popular_posts(self, mockdate=None):
         from .views import BlogMixin
 
