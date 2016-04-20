@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
 
-import autocomplete_light
+import autocomplete_light.shortcuts as autocomplete_light
 
 import models
 
