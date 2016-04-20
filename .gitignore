@@ -1,0 +1,3 @@
+*.pyc
+*~
+/django_info_pages.egg-info
