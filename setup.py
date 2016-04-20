@@ -12,6 +12,7 @@ setup(
         'Django>=1.8',
         'beautifulsoup4',
         'lxml',
+        'Markdown',
         'django-markitup',
         'nose',
         'django-slug-helpers',
