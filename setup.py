@@ -21,4 +21,9 @@ setup(
         'django-pagination==1.0.7',
         'django-slug-helpers==0.0.3',
     ],
+    extras_require={
+        'test': [
+            'mock',
+        ],
+    },
 )
