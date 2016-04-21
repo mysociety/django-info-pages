@@ -37,6 +37,7 @@ if not settings.configured:
         ),
         INFO_PAGES_ALLOW_RAW_HTML=False,
         INFO_POSTS_PER_LIST_PAGE=10,
+        MEDIA_URL='/media_root/',
     )
 
 def runtests():
