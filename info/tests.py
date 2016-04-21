@@ -28,8 +28,6 @@ class InfoTest(TestCase):
         self.assertEqual(page.get_absolute_url(), "/info/page")
         self.assertEqual(post.get_absolute_url(), "/blog/post")
 
-
-    @attr(country='south_africa')
     def test_info_newsletter_uses_custom_template(self):
 
         # Create the page entry so that we don't just get a 404
@@ -257,7 +255,6 @@ class InfoBlogClientTests(TestCase):
                 # print label, "should not contain", content
                 self.assertNotContains(response, content)
 
-    @attr(country='south_africa')
     def test_tags(self):
         self._test_label(
             tests = {
@@ -268,7 +265,6 @@ class InfoBlogClientTests(TestCase):
             url_base = '/blog/tag/'
         )
 
-    @attr(country='south_africa')
     def test_categories(self):
         self._test_label(
             tests = {
