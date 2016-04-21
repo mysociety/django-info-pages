@@ -9,7 +9,7 @@ setup(
     license = "AGPL",
     keywords = "django blog cms",
     install_requires = [
-        'Django>=1.8',
+        'Django>=1.8.12,<1.9',
         'beautifulsoup4',
         'lxml',
         'Markdown',
