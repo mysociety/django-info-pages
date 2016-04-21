@@ -28,17 +28,6 @@ class InfoTest(TestCase):
         self.assertEqual(page.get_absolute_url(), "/info/page")
         self.assertEqual(post.get_absolute_url(), "/blog/post")
 
-    def test_info_newsletter_uses_custom_template(self):
-
-        # Create the page entry so that we don't just get a 404
-        InfoPage.objects.create(slug="newsletter", title="Newsletter", markdown_content="Blah blah")
-
-        # Get the page
-        c = Client()
-        response = c.get('/info/newsletter')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "south_africa/info_newsletter.html")
-
     def test_empty_info_page(self):
         empty_post = InfoPage.objects.create(
             slug='empty-of-info',
