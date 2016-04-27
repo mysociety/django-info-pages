@@ -9,6 +9,7 @@ setup(
     description = "Editable info pages and basic blog functionality for Django",
     license = "AGPL",
     keywords = "django blog cms",
+    include_package_data=True,
     install_requires = [
         'Django>=1.8.12,<1.9',
         'beautifulsoup4',
