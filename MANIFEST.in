@@ -1,4 +1,5 @@
-recursive-include info/templates *
-recursive-include info/static *
-recursive-include info/fixtures *
-recursive-include example_templates *
+recursive-include info/templates *.html
+recursive-include info/static *.js
+recursive-include info/fixtures *.json
+recursive-include info/fixtures *.png
+recursive-include example_templates *.html
