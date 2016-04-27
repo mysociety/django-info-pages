@@ -5,6 +5,7 @@ setup(
     packages = find_packages(),
     author = "Edmund von der Burg",
     author_email = "evdb@ecclestoad.co.uk",
+    url = "https://github.com/mysociety/django-info-pages",
     description = "Editable info pages and basic blog functionality for Django",
     license = "AGPL",
     keywords = "django blog cms",
