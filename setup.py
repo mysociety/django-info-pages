@@ -20,7 +20,7 @@ setup(
         'django-autocomplete-light==2.3.3',
         'django-file-archive==0.0.2',
         'django-pagination==1.0.7',
-        'django-slug-helpers==0.0.3',
+        'django-slug-helpers>=0.0.3',
     ],
     extras_require={
         'test': [
