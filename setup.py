@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name = "django-info-pages",
-    version = "0.0.3",
+    version = "0.0.4",
     packages = find_packages(),
     author = "Edmund von der Burg",
     author_email = "evdb@ecclestoad.co.uk",
