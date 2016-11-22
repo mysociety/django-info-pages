@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 import itertools
 import mock
 from os.path import dirname, join
@@ -213,6 +213,87 @@ class ViewCountsTest(TestCase):
             ['post', 'post2'],
             )
 
+    @mock.patch('info.views.date')
+    def test_blog_sidebar_popular_posts_published_last_month(self, mockdate=None):
+        from .views import BlogMixin
+
+        new_popular_post = InfoPage.objects.create(
+            slug="new_popular_post",
+            title="Example title 1",
+            raw_content="Example content 1",
+            use_raw=True,
+            kind=InfoPage.KIND_BLOG,
+            publication_date=date(2014, 12, 15),
+        )
+        new_unpopular_post = InfoPage.objects.create(
+            slug="new_unpopular_post",
+            title="Example title 2",
+            raw_content="Example content 2",
+            use_raw=True,
+            kind=InfoPage.KIND_BLOG,
+            publication_date=date(2014, 12, 20),
+        )
+        old_popular_post = InfoPage.objects.create(
+            slug="old_popular_post",
+            title="Example title 3",
+            raw_content="Example content 3",
+            use_raw=True,
+            kind=InfoPage.KIND_BLOG,
+            publication_date=date(2014, 1, 1),
+        )
+        old_popular_in_the_past_post = InfoPage.objects.create(
+            slug="old_popular_in_the_past_post",
+            title="Example title 4",
+            raw_content="Example content 4",
+            use_raw=True,
+            kind=InfoPage.KIND_BLOG,
+            publication_date=date(2014, 1, 1),
+        )
+        old_unpopular_post = InfoPage.objects.create(
+            slug="old_unpopular_post",
+            title="Example title 5",
+            raw_content="Example content 5",
+            use_raw=True,
+            kind=InfoPage.KIND_BLOG,
+            publication_date=date(2014, 1, 15),
+        )
+
+        fake_today = date(2015, 1, 1)
+
+        ViewCount.objects.create(
+            page=new_popular_post,
+            count=100,
+            date=new_popular_post.publication_date + timedelta(days=1),
+            )
+        ViewCount.objects.create(
+            page=new_unpopular_post,
+            count=5,
+            date=new_unpopular_post.publication_date + timedelta(days=1),
+            )
+        ViewCount.objects.create(
+            page=old_popular_post,
+            count=500,
+            date=date(2014, 12, 15),
+            )
+        ViewCount.objects.create(
+            page=old_popular_in_the_past_post,
+            count=600,
+            date=old_popular_in_the_past_post.publication_date + timedelta(days=1),
+            )
+        ViewCount.objects.create(
+            page=old_unpopular_post,
+            count=1,
+            date=old_unpopular_post.publication_date + timedelta(days=1),
+            )
+
+        mockdate.today.return_value = fake_today
+
+        context = BlogMixin().get_context_data()
+
+        self.assertListEqual(
+            [x['slug'] for x in context['popular_recent_posts']],
+            ['new_popular_post', 'new_unpopular_post'],
+            )
 
 class InfoBlogClientTests(TestCase):
     fixtures = ['sample_blog_posts.json']

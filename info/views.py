@@ -27,27 +27,43 @@ class BlogMixin(ContextMixin):
         ).count()
 
         if viewcounts:
-            # The '?' means to randomize the order among counts that
-            # are the same - this is only really useful when we have
+            # We randomize the order of blog posts with the same number
+            # of views - this is only really useful when we have
             # very little data, since with more data it's unlikely
             # there will be many pages with the same number of view
-            # counts in the recent period anyway:
-            if viewcounts < 20:
-                order_args = ('-viewcount__count__sum', '?')
-            else:
-                order_args = ('-viewcount__count__sum',)
-            context['popular_posts'] = (
-                InfoPage.objects
-                .filter(kind=InfoPage.KIND_BLOG)
-                .filter(viewcount__count__gt=0)
-                .filter(viewcount__date__gte=date.today() - timedelta(days=28))
-                .values('title', 'slug')
-                .annotate(Sum('viewcount__count'))
-                .order_by(*order_args)
-            )
+            # counts in the recent period anyway
+            randomize_same_sum = viewcounts < 20
+            context['popular_posts'] = self.popular_posts_queryset(
+                only_recent_posts=False,
+                randomize_same_sum=randomize_same_sum)
+            context['popular_recent_posts'] = self.popular_posts_queryset(
+                only_recent_posts=True,
+                randomize_same_sum=randomize_same_sum)
 
         return context
 
+    def popular_posts_queryset(self, only_recent_posts, randomize_same_sum):
+        date_condition = {}
+        if only_recent_posts:
+            date_condition = {
+                'publication_date__gte': date.today() - timedelta(days=28)}
+
+        # The '?' means to randomize the order among counts that
+        # are the same
+        if randomize_same_sum:
+            order_args = ('-viewcount__count__sum', '?')
+        else:
+            order_args = ('-viewcount__count__sum',)
+
+        return (InfoPage.objects
+            .filter(kind=InfoPage.KIND_BLOG)
+            .filter(**date_condition)
+            .filter(viewcount__count__gt=0)
+            .filter(viewcount__date__gte=date.today() - timedelta(days=28))
+            .values('title', 'slug')
+            .annotate(Sum('viewcount__count'))
+            .order_by(*order_args)
+        )
 
 class InfoBlogList(BlogMixin, ListView):
     """Show list of blog posts"""
