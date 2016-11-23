@@ -10,6 +10,9 @@ from django.conf import settings
 
 from models import InfoPage, Category, Tag, ViewCount
 
+class LazyTagLookup(object):
+    def __getitem__(self, tag_slug):
+        return InfoPage.objects.filter(tags__slug=tag_slug)
 
 class BlogMixin(ContextMixin):
 
@@ -39,6 +42,8 @@ class BlogMixin(ContextMixin):
             context['popular_recent_posts'] = self.popular_posts_queryset(
                 only_recent_posts=True,
                 randomize_same_sum=randomize_same_sum)
+
+        context['posts_by_tag'] = LazyTagLookup()
 
         return context
 

@@ -295,6 +295,35 @@ class ViewCountsTest(TestCase):
             ['new_popular_post', 'new_unpopular_post'],
             )
 
+    @mock.patch('info.views.date')
+    def test_blog_sidebar_posts_by_tag(self, mockdate=None):
+        from .views import BlogMixin
+
+        must_read_post = InfoPage.objects.create(
+            slug="must_read_post",
+            title="Example title",
+            raw_content="Example content",
+            use_raw=True,
+            kind=InfoPage.KIND_BLOG,
+        )
+        must_read_post.tags.create(name='Must Read', slug='must-read')
+
+        not_must_read_post = InfoPage.objects.create(
+            slug="not_must_read_post",
+            title="Example title not must read",
+            raw_content="Example content not must read",
+            use_raw=True,
+            kind=InfoPage.KIND_BLOG,
+        )
+        not_must_read_post.tags.create(name='News', slug='news')
+
+        context = BlogMixin().get_context_data()
+
+        self.assertListEqual(
+            [x.slug for x in context['posts_by_tag']['must-read']],
+            ['must_read_post'],
+            )
+
 class InfoBlogClientTests(TestCase):
     fixtures = ['sample_blog_posts.json']
 
