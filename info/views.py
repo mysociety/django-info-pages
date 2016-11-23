@@ -10,9 +10,11 @@ from django.conf import settings
 
 from models import InfoPage, Category, Tag, ViewCount
 
+
 class LazyTagLookup(object):
     def __getitem__(self, tag_slug):
         return InfoPage.objects.filter(tags__slug=tag_slug)
+
 
 class BlogMixin(ContextMixin):
 
@@ -60,15 +62,16 @@ class BlogMixin(ContextMixin):
         else:
             order_args = ('-viewcount__count__sum',)
 
-        return (InfoPage.objects
+        return (
+            InfoPage.objects
             .filter(kind=InfoPage.KIND_BLOG)
             .filter(**date_condition)
             .filter(viewcount__count__gt=0)
             .filter(viewcount__date__gte=date.today() - timedelta(days=28))
             .values('title', 'slug')
             .annotate(Sum('viewcount__count'))
-            .order_by(*order_args)
-        )
+            .order_by(*order_args))
+
 
 class InfoBlogList(BlogMixin, ListView):
     """Show list of blog posts"""
