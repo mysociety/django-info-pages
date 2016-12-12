@@ -94,6 +94,54 @@ class InfoTest(TestCase):
         )
 
 
+class TestMarkdownFormat(TestCase):
+
+    def setUp(self):
+        InfoPage.objects.create(
+            slug='example-md-blog-post',
+            title='An Example Blog Post Written in Markdown',
+            markdown_content='[Hello,](https://example.com) world!',
+            kind=InfoPage.KIND_BLOG)
+        InfoPage.objects.create(
+            slug='example-html-blog-post',
+            title='An Example Blog Post Written in HTML',
+            raw_content='''<h1 class="foo">Hello, world</h1>
+                <p>There's nothing of interest here, really.</p>
+                <script>alert('this is a bit dodgy!');</script>''',
+            use_raw=True,
+            kind=InfoPage.KIND_BLOG)
+
+    def test_get_html_version_of_markdown(self):
+        # This is the usual case:
+        response = self.client.get('/blog/example-md-blog-post')
+        self.assertIn(
+            '<p><a href="https://example.com">Hello,</a> world!</p>',
+            response.content)
+
+    def test_get_markdown_version_of_markdown(self):
+        # This is the usual case, but fetching the original markdown
+        # using a format query parameter:
+        response = self.client.get('/blog/example-md-blog-post?format=md')
+        self.assertEqual(
+            '[Hello,](https://example.com) world!',
+            response.content)
+
+    def test_get_html_version_of_html(self):
+        # Occasionally people write blog posts in raw HTML - they
+        # should be fetchable as HTML (with anything dodgy removed)
+        response = self.client.get('/blog/example-html-blog-post')
+        self.assertIn(
+            '''<h1>An Example Blog Post Written in HTML</h1>''',
+            response.content)
+        self.assertNotIn('<script>', response.content)
+
+    def test_no_markdown_version_of_html(self):
+        # We can't easily provide a Markdown version of raw HTML
+        # posts, so this should just return a 404 response:
+        response = self.client.get('/blog/example-html-blog-post?format=md')
+        self.assertEqual(response.status_code, 404)
+
+
 @override_settings(INFO_PAGES_ALLOW_RAW_HTML=True)
 class ViewCountsTest(TestCase):
 
