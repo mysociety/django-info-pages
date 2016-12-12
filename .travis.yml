@@ -6,5 +6,8 @@ env:
 install:
   - "pip install Django$DJANGO_VERSION"
   - "pip install -e ."
+  - "pip install coverage python-coveralls"
 script:
-  - "python runtests.py"
+  - "coverage run --source=info runtests.py"
+after_success:
+  - coveralls
