@@ -3,7 +3,7 @@ from django.contrib import admin
 
 import autocomplete_light.shortcuts as autocomplete_light
 
-import models
+from info import models
 
 from slug_helpers.admin import StricterSlugFieldMixin
 
