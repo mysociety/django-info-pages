@@ -8,7 +8,7 @@ from django.db.models import F, Sum
 from django.shortcuts import get_list_or_404
 from django.conf import settings
 
-from models import InfoPage, Category, Tag, ViewCount
+from info.models import InfoPage, Category, Tag, ViewCount
 
 
 class LazyTagLookup(object):
