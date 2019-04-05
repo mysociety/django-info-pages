@@ -11,7 +11,7 @@ setup(
     keywords = "django blog cms",
     include_package_data=True,
     install_requires = [
-        'Django>=1.8.12,<1.9',
+        'Django>=1.8.12,<1.10',
         'beautifulsoup4',
         'lxml',
         'Markdown',
