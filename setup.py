@@ -1,4 +1,12 @@
 from setuptools import setup, find_packages
+from os import path
+
+
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
+
 setup(
     name = "django-info-pages",
     version = "0.0.5",
@@ -7,6 +15,8 @@ setup(
     author_email = "evdb@ecclestoad.co.uk",
     url = "https://github.com/mysociety/django-info-pages",
     description = "Editable info pages and basic blog functionality for Django",
+    long_description = long_description,
+    long_description_content_type = 'text/markdown',
     license = "AGPL",
     keywords = "django blog cms",
     include_package_data=True,
