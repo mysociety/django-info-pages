@@ -20,7 +20,7 @@ def get_first_image_file(file_archive_file_class, info_page):
         html = info_page.raw_content
     else:
         html = markdown(unicode(info_page.markdown_content))
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html, features='lxml')
     imgs = soup.find_all('img')
     if not imgs:
         return None

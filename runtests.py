@@ -28,9 +28,20 @@ if not settings.configured:
         SITE_ID=1,
         SECRET_KEY='this-is-just-for-tests-so-not-that-secret',
         ROOT_URLCONF='info.urls',
-        TEMPLATE_DIRS=(
-            realpath(join(dirname(__file__), 'example_templates')),
-        ),
+        TEMPLATES=[
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [
+                    realpath(join(dirname(__file__), 'example_templates'))
+                ],
+                'APP_DIRS': True,
+                'OPTIONS': {
+                    'context_processors': [
+                        'django.contrib.auth.context_processors.auth',
+                    ],
+                },
+            },
+        ],
         MARKITUP_FILTER=(
             'markdown.markdown',
             {'safe_mode': True, 'extensions':['tables']}
