@@ -2,3 +2,4 @@
 *~
 /django_info_pages.egg-info
 /file_archive/
+.tox
