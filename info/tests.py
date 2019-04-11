@@ -118,8 +118,8 @@ class ViewCountsTest(TestCase):
         post_1_url = reverse('info_blog', kwargs={'slug': 'post'})
         post_2_url = reverse('info_blog', kwargs={'slug': 'post2'})
 
-        day1 = date(2015, 01, 01)
-        day2 = date(2015, 01, 02)
+        day1 = date(2015, 1, 1)
+        day2 = date(2015, 1, 2)
 
         mockdate.today.return_value = day1
 
@@ -186,7 +186,7 @@ class ViewCountsTest(TestCase):
             kind=InfoPage.KIND_BLOG,
         )
 
-        day1 = date(2015, 01, 01)
+        day1 = date(2015, 1, 1)
 
         ViewCount.objects.create(
             page=example_post_1,
@@ -338,10 +338,10 @@ class InfoBlogClientTests(TestCase):
     def _test_label(self, tests, url_base):
         c = Client()
 
-        all_contents = list( itertools.chain( *tests.values() ) )
+        all_contents = list( itertools.chain( *list(tests.values()) ) )
         # print all_contents
 
-        for label, expected_contents in tests.items():
+        for label, expected_contents in list(tests.items()):
             url = url_base + label
             # print '------------------', url
             response = c.get(url)

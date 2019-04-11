@@ -1,3 +1,4 @@
+from builtins import object
 from django.conf import settings
 from django.contrib import admin
 
@@ -42,5 +43,5 @@ class InfoPageAdmin(StricterSlugFieldMixin, admin.ModelAdmin):
     fields = fields_to_use
     prepopulated_fields = {'slug': ['title']}
 
-    class Media:
+    class Media(object):
         js = ("info/js/admin.js",)

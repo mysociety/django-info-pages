@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import object
 import datetime
 import lxml
 from lxml.html.clean import Cleaner
@@ -16,7 +18,7 @@ class ModelBase(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    class Meta:
+    class Meta(object):
         abstract = True
 
 
@@ -33,7 +35,7 @@ class LabelModelBase(ModelBase):
     def __unicode__(self):
         return self.name
 
-    class Meta():
+    class Meta(object):
         abstract = True
         ordering = ( 'name', )
 
@@ -42,7 +44,7 @@ class Category(LabelModelBase):
 
     summary = MarkupField(blank=True)
 
-    class Meta():
+    class Meta(object):
         verbose_name_plural = 'categories'
 
 
@@ -190,7 +192,7 @@ class InfoPage(ModelBase):
         )
         return url
 
-    class Meta:
+    class Meta(object):
         ordering = ['title']
 
 
@@ -202,5 +204,5 @@ class ViewCount(models.Model):
     # to manually insert a negative count to keep a post down.
     count = models.IntegerField()
 
-    class Meta:
+    class Meta(object):
         unique_together = ('date', 'page')

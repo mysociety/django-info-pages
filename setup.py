@@ -21,7 +21,8 @@ setup(
         'django-file-archive==0.0.2',
         'django-pagination==1.0.7',
         'django-slug-helpers>=0.0.3',
-        'six==1.10.0'
+        'six==1.10.0',
+        'future',
     ],
     extras_require={
         'test': [

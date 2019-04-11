@@ -1,5 +1,8 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 from os.path import join
-from urlparse import urlsplit
+from urllib.parse import urlsplit
 
 from bs4 import BeautifulSoup
 from markdown import markdown
@@ -19,7 +22,7 @@ def get_first_image_file(file_archive_file_class, info_page):
     if info_page.use_raw:
         html = info_page.raw_content
     else:
-        html = markdown(unicode(info_page.markdown_content))
+        html = markdown(str(info_page.markdown_content))
     soup = BeautifulSoup(html)
     imgs = soup.find_all('img')
     if not imgs:
