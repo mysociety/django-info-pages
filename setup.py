@@ -10,7 +10,7 @@ with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="django-info-pages",
-    version="0.0.5",
+    version="1.0.0",
     packages=find_packages(),
     author="mySociety developers",
     author_email="modules@mysociety.org",
