@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 
+from django.http import Http404, HttpResponse
 from django.views.generic import DetailView, ListView
 from django.views.generic.base import ContextMixin
 from django.contrib.syndication.views import Feed
@@ -73,6 +74,21 @@ class BlogMixin(ContextMixin):
             .order_by(*order_args))
 
 
+class MarkdownFormatMixin(object):
+
+    def get(self, request, *args, **kwargs):
+        format_option = request.GET.get('format')
+        if format_option == 'md':
+            self.object = self.get_object()
+            md = self.object.markdown_content.raw
+            if md.strip():
+                return HttpResponse(
+                    md,
+                    content_type='text/markdown; charset=UTF-8')
+            raise Http404('No Markdown found; probably was authored in HTML')
+        return super(MarkdownFormatMixin, self).get(request, *args, **kwargs)
+
+
 class InfoBlogList(BlogMixin, ListView):
     """Show list of blog posts"""
     model = InfoPage
@@ -123,7 +139,7 @@ class InfoBlogTag(InfoBlogLabelBase):
     filter_field = 'tags__slug__in'
 
 
-class InfoBlogView(BlogMixin, DetailView):
+class InfoBlogView(MarkdownFormatMixin, BlogMixin, DetailView):
     """Show the blog post for the given slug"""
     model = InfoPage
     queryset = InfoPage.objects.filter(kind=InfoPage.KIND_BLOG)
